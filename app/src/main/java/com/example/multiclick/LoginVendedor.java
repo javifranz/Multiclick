@@ -45,6 +45,8 @@ public class LoginVendedor extends AppCompatActivity {
             String email = textoEmail.getText().toString();
             String password = textoPassword.getText().toString();
 
+
+
             //INICIAR SESION EN FIREBASE
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -67,7 +69,7 @@ public class LoginVendedor extends AppCompatActivity {
         });
 
         botonRegistroVendedor = findViewById(R.id.botonCrearCuentaVendedor);
-        botonLoginVendedor.setOnClickListener(new View.OnClickListener() {
+        botonRegistroVendedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -76,30 +78,44 @@ public class LoginVendedor extends AppCompatActivity {
                 String email = textoEmail.getText().toString();
                 String password = textoPassword.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(LoginVendedor.this, "Vendedor registrado", Toast.LENGTH_SHORT).show();
+                if(email.isEmpty()){
+                    textoEmail.setError("El campo email esta vacío");
 
-                                    //Cambiar MainActivity por VendedorMain
-                                    Intent intent = new Intent(LoginVendedor.this, MainActivity.class);
-                                    startActivity(intent);
+                }else if(!email.contains("@")){
+                    textoEmail.setError("No es una dirección válida");
+                }else if(!email.contains(".")){
+                    textoEmail.setError("No es una dirección válida");
+                }else if(!email.contains("multiclick.com")){
+                    textoEmail.setError("No es una dirección de Multiclick");
+                }
+                else if(password.length()<6){
+                    textoPassword.setError("Debe tener min 6 caracteres");
+                }else {
+
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Toast.makeText(LoginVendedor.this, "Vendedor registrado", Toast.LENGTH_SHORT).show();
+
+                                        //Cambiar MainActivity por VendedorMain
+                                        Intent intent = new Intent(LoginVendedor.this, MainActivity.class);
+                                        startActivity(intent);
 
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
+                                    } else {
+                                        // If sign in fails, display a message to the user.
 
-                                    Toast.makeText(LoginVendedor.this, "Error al crear el vendedor.",
-                                            Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginVendedor.this, "Error al crear el vendedor.",
+                                                Toast.LENGTH_SHORT).show();
 
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-
+                }
             }
         });
 

@@ -77,30 +77,44 @@ public class LoginComprador extends AppCompatActivity {
                 String email = textoEmail.getText().toString();
                 String password = textoPassword.getText().toString();
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(LoginComprador.this, "Comprador registrado", Toast.LENGTH_SHORT).show();
+                if(email.isEmpty()){
+                    textoEmail.setError("El campo email esta vacío");
 
-                                    //Sustituir MainActivity por CompradorMain
-                                    Intent intent = new Intent(LoginComprador.this, MainActivity.class);
-                                    startActivity(intent);
+                }else if(!email.contains("@")){
+                    textoEmail.setError("No es una dirección válida");
+                }else if(!email.contains(".")){
+                    textoEmail.setError("No es una dirección válida");
+                }
+                else if(password.length()<6){
+                    textoPassword.setError("Debe tener min 6 caracteres");
+                }else {
+
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
 
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Toast.makeText(LoginComprador.this, "Comprador registrado", Toast.LENGTH_SHORT).show();
 
-                                    Toast.makeText(LoginComprador.this, "Error al crear el comprador.",
-                                            Toast.LENGTH_SHORT).show();
+                                        //Sustituir MainActivity por CompradorMain
+                                        Intent intent = new Intent(LoginComprador.this, MainActivity.class);
+                                        startActivity(intent);
 
+
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+
+                                        Toast.makeText(LoginComprador.this, "Error al crear el comprador.",
+                                                Toast.LENGTH_SHORT).show();
+
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-
+                }
             }
         });
 
