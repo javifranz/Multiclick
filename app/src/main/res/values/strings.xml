@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Multiclick</string>
+    <string name="hintEmail">email</string>
+    <string name="hintPass">password</string>
+    <string name="compradores">Compradores</string>
+    <string name="multiclick">Multiclick</string>
+    <string name="login">Login</string>
+    <string name="vendedores">Vendedores</string>
+</resources>
